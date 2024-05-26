@@ -60,7 +60,7 @@ export const signIn = async (email, password) => {
     }
 }
 
-// Get Account
+// Get Current User
 export const getCurrentUser = async () => {
     try {
         const currentAccount = await account.get();
@@ -81,7 +81,7 @@ export const getCurrentUser = async () => {
     }
 }
 
-// Get Current User
+// Get Account
 
 
 // Sign Out
@@ -97,7 +97,17 @@ export const getCurrentUser = async () => {
 
 
 // Get All Video Posts
-
+export const getAllPosts = async () => {
+    try {
+        const posts = await databases.listDocuments(
+            appwriteConfig.databaseId,
+            appwriteConfig.videoCollectionId
+        )
+        return posts.documents;
+    } catch (error) {
+        throw new Error(error);
+    }
+}
 
 // Get Video Posts Created by User
 
@@ -106,3 +116,15 @@ export const getCurrentUser = async () => {
 
 
 // Get Latest Created Video Posts
+export const getLatestPosts = async () => {
+    try {
+        const posts = await databases.listDocuments(
+            appwriteConfig.databaseId,
+            appwriteConfig.videoCollectionId,
+            [Query.orderDesc('$createdAt', Query.limit(7))]
+        )
+        return posts.documents;
+    } catch (error) {
+        throw new Error(error);
+    }
+}
