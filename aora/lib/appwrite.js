@@ -113,7 +113,21 @@ export const getAllPosts = async () => {
 
 
 // Get Video Posts that Matches Search Query
+export const searchPosts = async (query) => {
+    try {
+        const posts = await databases.listDocuments(
+            appwriteConfig.databaseId,
+            appwriteConfig.videoCollectionId,
+            [Query.search('title', query)]
+        );
 
+        if (!posts) throw new Error("Something went wrong");
+
+        return posts.documents;
+    } catch (error) {
+        throw new Error(error);
+    }
+}
 
 // Get Latest Created Video Posts
 export const getLatestPosts = async () => {
