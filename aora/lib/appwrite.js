@@ -43,7 +43,6 @@ export const createUser = async (email, password, username) => {
 
         return newUser;
     } catch (error) {
-        console.log(error);
         throw new Error(error);
     }
 };
@@ -85,6 +84,15 @@ export const getCurrentUser = async () => {
 
 
 // Sign Out
+export const signOut = async () => {
+    try {
+        const session = await account.deleteSession("current");
+        
+        return session;
+    } catch (error) {
+        throw new Error(error);        
+    }
+}
 
 
 // upload File
@@ -110,6 +118,19 @@ export const getAllPosts = async () => {
 }
 
 // Get Video Posts Created by User
+export const getUserPosts = async (userId) => {
+    try {
+        const posts = await databases.listDocuments(
+            appwriteConfig.databaseId,
+            appwriteConfig.videoCollectionId,
+            [Query.equal('creator', userId)]
+        );
+
+        return posts.documents;
+    } catch (error) {
+        throw new Error(error);
+    }
+}
 
 
 // Get Video Posts that Matches Search Query
